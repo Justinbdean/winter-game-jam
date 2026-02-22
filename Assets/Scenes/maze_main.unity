@@ -289,7 +289,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
---- !u!1001 &2631156345067507615
+--- !u!1001 &402265068360199765
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -348,10 +348,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6726217244720934881, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 1993250810949986693, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 322287373}
-  - {fileID: 2631156345067507615}
+  - {fileID: 402265068360199765}
