@@ -13,14 +13,9 @@ public class TwoPlayerMovement3D : MonoBehaviour
 
     [Header("Action Maps / Actions")]
     [SerializeField] private string playerMapName = "Player";
-    [SerializeField] private string reflectionMapName = "Player Reflection";
     [SerializeField] private string moveActionName = "Move";
 
-    [Header("UI / Helpers")]
-    [SerializeField] private GameObject solution;
-
     private InputAction playerMove;
-    private InputAction reflectionMove;
 
     private void Awake()
     {
@@ -29,76 +24,58 @@ public class TwoPlayerMovement3D : MonoBehaviour
 
         var playerMap = inputActions.FindActionMap(playerMapName, true);
         playerMove = playerMap.FindAction(moveActionName, true);
-
-        var reflectionMap = inputActions.FindActionMap(reflectionMapName, true);
-        reflectionMove = reflectionMap.FindAction(moveActionName, true);
     }
 
-    private void OnEnable()
-    {
-        playerMove.Enable();
-        reflectionMove.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerMove.Disable();
-        reflectionMove.Disable();
-    }
+    private void OnEnable() => playerMove.Enable();
+    private void OnDisable() => playerMove.Disable();
 
     private void FixedUpdate()
     {
-        // Move both as normal
-        MoveRb(playerRb, playerMove.ReadValue<Vector2>());
-        MoveRb(reflectionRb, reflectionMove.ReadValue<Vector2>());
+        if (playerRb == null || reflectionRb == null) return;
 
-        // 🔥 NEW: if either velocity becomes zero, force both to stop
-        SyncStopIfOneStops();
+        Vector2 input = playerMove.ReadValue<Vector2>();
+        
+        if (input.sqrMagnitude < 0.01f)
+        {
+            StopBoth();
+            return;
+        }
+
+        // 1. Calculate and apply velocity
+        Vector3 pVel = new Vector3(input.x, input.y, 0f) * moveSpeed;
+        Vector3 rVel = new Vector3(input.x, -input.y, 0f) * moveSpeed;
+
+        playerRb.linearVelocity = pVel;
+        reflectionRb.linearVelocity = rVel;
+
+        // 2. The Jitter Fix: 
+        // We only force a stop if the actual movement is EXTREMELY low (stuck).
+        // Using a lower threshold (like 0.1) prevents the "jitter" from triggering a stop.
+        if (playerRb.linearVelocity.magnitude < 0.1f || reflectionRb.linearVelocity.magnitude < 0.1f)
+        {
+            StopBoth();
+        }
     }
 
-    private void Update()
+    private void StopBoth()
     {
-        if (Keyboard.current != null && Keyboard.current.nKey.wasPressedThisFrame)
-        {
-            if (solution != null)
-                solution.SetActive(!solution.activeSelf);
-        }
+        playerRb.linearVelocity = Vector3.zero;
+        reflectionRb.linearVelocity = Vector3.zero;
+    }
+
+    private bool IsActuallyBlocked(Rigidbody rb, Vector3 intendedVel)
+    {
+        // If we are trying to move but the actual velocity is nearly 0
+        // it means we are grinding against a wall.
+        return rb.linearVelocity.magnitude < 0.5f; 
     }
 
     private void SetupRb(Rigidbody rb)
     {
         if (rb == null) return;
-
         rb.useGravity = false;
-        rb.freezeRotation = true;
+        // Collision Detection should be Continuous for maze walls
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous; 
         rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-    }
-
-    private void MoveRb(Rigidbody rb, Vector2 input)
-    {
-        if (rb == null) return;
-
-        Vector3 move = new Vector3(input.x, input.y, 0f);
-
-        if (move.sqrMagnitude > 1f)
-            move.Normalize();
-
-        rb.linearVelocity = move * moveSpeed * Time.deltaTime;
-    }
-
-    // ⭐ THIS is the only new behavior you asked for
-    private void SyncStopIfOneStops()
-    {
-        if (playerRb == null || reflectionRb == null) return;
-
-        // Small threshold avoids float precision issues
-        bool playerStopped = playerRb.linearVelocity.sqrMagnitude < 0.0001f;
-        bool reflectionStopped = reflectionRb.linearVelocity.sqrMagnitude < 0.0001f;
-
-        if (playerStopped || reflectionStopped)
-        {
-            playerRb.linearVelocity = Vector3.zero;
-            reflectionRb.linearVelocity = Vector3.zero;
-        }
     }
 }

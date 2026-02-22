@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &18191713 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8446768505577328718, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+  m_PrefabInstance: {fileID: 1629991071273765234}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
 --- !u!1 &322287370
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,11 +189,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
+  near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 0.14
+  orthographic size: 1.2480243
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -207,7 +218,7 @@ Transform:
   m_GameObject: {fileID: 322287370}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.02825, y: 0.91696, z: -9.9458}
+  m_LocalPosition: {x: -0.42, y: 0.04, z: -1.58}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -289,6 +300,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!54 &1739910244 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 6226355207249011593, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+  m_PrefabInstance: {fileID: 1629991071273765234}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1629991071273765234
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -300,6 +316,50 @@ PrefabInstance:
     - target: {fileID: 317439760872036777, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
       propertyPath: mapCam
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 348732271125252162, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 756e17d35e9b42a4e93f87674d75cf6d, type: 2}
+    - target: {fileID: 374226850906567174, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 756e17d35e9b42a4e93f87674d75cf6d, type: 2}
+    - target: {fileID: 645787712133639627, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Volume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1207052629099057553, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 756e17d35e9b42a4e93f87674d75cf6d, type: 2}
+    - target: {fileID: 2211212326726097737, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: reflectionCam
+      value: 
+      objectReference: {fileID: 18191713}
+    - target: {fileID: 3102950599487027301, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 756e17d35e9b42a4e93f87674d75cf6d, type: 2}
+    - target: {fileID: 5380324527019961982, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.7416
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226355207249011593, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7025768701886220073, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: moveSpeed
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7025768701886220073, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: reflectionRb
+      value: 
+      objectReference: {fileID: 1739910244}
+    - target: {fileID: 8446768505577328718, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: Lens.NearClipPlane
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 8594467487872520333, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -341,10 +401,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8842053713202936941, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9049891298154501945, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
       propertyPath: m_Name
       value: maze_1_build
       objectReference: {fileID: 0}
+    - target: {fileID: 9220412162402369633, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: moveSpeed
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9220412162402369633, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: inputActions
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
