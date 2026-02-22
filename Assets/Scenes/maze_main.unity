@@ -119,17 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &18191713 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8446768505577328718, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-  m_PrefabInstance: {fileID: 1629991071273765234}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
 --- !u!1 &322287370
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,12 +289,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
---- !u!54 &1739910244 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 6226355207249011593, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-  m_PrefabInstance: {fileID: 1629991071273765234}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1629991071273765234
+--- !u!1001 &3305018010467473965
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -313,53 +297,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 317439760872036777, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: mapCam
-      value: 
+    - target: {fileID: 341219015973452097, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 348732271125252162, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 756e17d35e9b42a4e93f87674d75cf6d, type: 2}
-    - target: {fileID: 374226850906567174, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 756e17d35e9b42a4e93f87674d75cf6d, type: 2}
-    - target: {fileID: 645787712133639627, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_Volume
-      value: 0.1
+    - target: {fileID: 2252090218484484253, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 1207052629099057553, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 756e17d35e9b42a4e93f87674d75cf6d, type: 2}
-    - target: {fileID: 2211212326726097737, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: reflectionCam
-      value: 
-      objectReference: {fileID: 18191713}
-    - target: {fileID: 3102950599487027301, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 756e17d35e9b42a4e93f87674d75cf6d, type: 2}
-    - target: {fileID: 5380324527019961982, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.7416
+    - target: {fileID: 4401831170960989889, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
-    - target: {fileID: 6226355207249011593, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_Interpolate
-      value: 1
+    - target: {fileID: 4808305481168116204, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5894909277422356028, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7025768701886220073, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: moveSpeed
-      value: 0.25
+      propertyPath: wallLayer.m_Bits
+      value: 64
       objectReference: {fileID: 0}
-    - target: {fileID: 7025768701886220073, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: reflectionRb
-      value: 
-      objectReference: {fileID: 1739910244}
-    - target: {fileID: 8446768505577328718, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: Lens.NearClipPlane
-      value: 0.01
+    - target: {fileID: 7189867882411032960, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7988111184938562822, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8168040105501741347, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8594467487872520333, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -401,22 +373,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8842053713202936941, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_Interpolate
-      value: 1
+    - target: {fileID: 8940732939341336653, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9049891298154501945, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
       propertyPath: m_Name
       value: maze_1_build
       objectReference: {fileID: 0}
     - target: {fileID: 9220412162402369633, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: moveSpeed
-      value: 0.25
+      propertyPath: wallLayer.m_Bits
+      value: 64
       objectReference: {fileID: 0}
-    - target: {fileID: 9220412162402369633, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: inputActions
-      value: 
-      objectReference: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -430,4 +398,4 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 322287373}
-  - {fileID: 1629991071273765234}
+  - {fileID: 3305018010467473965}

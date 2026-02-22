@@ -29,39 +29,94 @@ public class TwoPlayerMovement3D : MonoBehaviour
     private void OnEnable() => playerMove.Enable();
     private void OnDisable() => playerMove.Disable();
 
-    private void FixedUpdate()
+private void FixedUpdate()
+{
+    if (playerRb == null || reflectionRb == null) return;
+
+    Vector2 input = playerMove.ReadValue<Vector2>();
+    
+    if (input.sqrMagnitude < 0.01f)
     {
-        if (playerRb == null || reflectionRb == null) return;
-
-        Vector2 input = playerMove.ReadValue<Vector2>();
-        
-        if (input.sqrMagnitude < 0.01f)
-        {
-            StopBoth();
-            return;
-        }
-
-        // 1. Calculate and apply velocity
-        Vector3 pVel = new Vector3(input.x, input.y, 0f) * moveSpeed;
-        Vector3 rVel = new Vector3(input.x, -input.y, 0f) * moveSpeed;
-
-        playerRb.linearVelocity = pVel;
-        reflectionRb.linearVelocity = rVel;
-
-        // 2. The Jitter Fix: 
-        // We only force a stop if the actual movement is EXTREMELY low (stuck).
-        // Using a lower threshold (like 0.1) prevents the "jitter" from triggering a stop.
-        if (playerRb.linearVelocity.magnitude < 0.1f || reflectionRb.linearVelocity.magnitude < 0.1f)
-        {
-            StopBoth();
-        }
+        StopBoth();
+        return;
     }
 
-    private void StopBoth()
+    // 1. Determine intended direction
+    Vector3 pDir = new Vector3(input.x, input.y, 0f).normalized;
+    Vector3 rDir = new Vector3(input.x, -input.y, 0f).normalized;
+
+    // 2. PRE-CHECK: Can both move in their intended directions?
+    // We "look ahead" by a tiny distance (0.1f)
+    bool pPathBlocked = IsPathBlocked(playerRb, pDir);
+    bool rPathBlocked = IsPathBlocked(reflectionRb, rDir);
+
+    // 3. MUTUAL RULE: If either is blocked, both stop
+    if (pPathBlocked || rPathBlocked)
     {
-        playerRb.linearVelocity = Vector3.zero;
-        reflectionRb.linearVelocity = Vector3.zero;
+        StopBoth();
     }
+    else
+    {
+        playerRb.linearVelocity = pDir * moveSpeed;
+        reflectionRb.linearVelocity = rDir * moveSpeed;
+    }
+}
+
+[Header("Physics Settings")]
+[SerializeField] private LayerMask wallLayer; // Select "Maze" in the Inspector
+
+private bool IsPathBlocked(Rigidbody rb, Vector3 direction)
+{
+    // 1. Calculate the 'Front' of your snowflake based on movement direction
+    // Since your snowflake is 0.025 wide, the edge is 0.0125 away from center.
+    float radius = 0.0125f; 
+    Vector3 frontEdge = rb.position + (direction * radius);
+
+    // 2. Use a "Skinny" sensor box so it doesn't catch on the sides of the walls
+    // For a 0.025 wide object, a 0.01 width (half-extent of 0.005) is much safer.
+    Vector3 skinnyBox = new Vector3(0.005f, 0.005f, 0.002f); 
+
+    // 3. Look ahead just slightly further than before to catch walls early
+    float checkDistance = 0.005f; 
+
+    RaycastHit hit;
+    if (Physics.BoxCast(frontEdge, skinnyBox, direction, out hit, rb.rotation, checkDistance, wallLayer))
+    {
+        // 4. THE ANGLE CHECK: Only stop if hitting the wall head-on
+        // This stops you from getting stuck when just "grazing" a side wall.
+        float angle = Vector3.Dot(hit.normal, direction);
+        if (angle < -0.6f) 
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+private void OnDrawGizmos()
+{
+    if (playerRb == null || reflectionRb == null) return;
+
+    Gizmos.color = Color.red;
+    Vector2 input = playerMove != null ? playerMove.ReadValue<Vector2>() : Vector2.zero;
+    
+    if (input.sqrMagnitude > 0.01f)
+    {
+        Vector3 pDir = new Vector3(input.x, input.y, 0f).normalized;
+        Vector3 rDir = new Vector3(input.x, -input.y, 0f).normalized;
+
+        // Draw the probe boxes
+        Gizmos.DrawWireCube(playerRb.position + pDir * 0.015f, new Vector3(0.01f, 0.01f, 0.005f));
+        Gizmos.DrawWireCube(reflectionRb.position + rDir * 0.015f, new Vector3(0.01f, 0.01f, 0.005f));
+    }
+}}
+
+private void StopBoth()
+{
+    playerRb.linearVelocity = Vector3.zero;
+    reflectionRb.linearVelocity = Vector3.zero;
+}
 
     private bool IsActuallyBlocked(Rigidbody rb, Vector3 intendedVel)
     {
