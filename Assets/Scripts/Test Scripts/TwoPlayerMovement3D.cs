@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class TwoPlayerMovement3D : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 6f;
+    [SerializeField] private float moveSpeed = 3f; // Reduced for better control at 0.025 scale
     [SerializeField] private InputActionAsset inputActions;
 
     [Header("Players (assign in Inspector)")]
@@ -14,6 +14,9 @@ public class TwoPlayerMovement3D : MonoBehaviour
     [Header("Action Maps / Actions")]
     [SerializeField] private string playerMapName = "Player";
     [SerializeField] private string moveActionName = "Move";
+
+    [Header("Physics Settings")]
+    [SerializeField] private LayerMask wallLayer; // Ensure "Maze" layer is selected in Inspector
 
     private InputAction playerMove;
 
@@ -29,108 +32,110 @@ public class TwoPlayerMovement3D : MonoBehaviour
     private void OnEnable() => playerMove.Enable();
     private void OnDisable() => playerMove.Disable();
 
-private void FixedUpdate()
-{
-    if (playerRb == null || reflectionRb == null) return;
-
-    Vector2 input = playerMove.ReadValue<Vector2>();
-    
-    if (input.sqrMagnitude < 0.01f)
+    private void FixedUpdate()
     {
-        StopBoth();
-        return;
-    }
+        if (playerRb == null || reflectionRb == null) return;
 
-    // 1. Determine intended direction
-    Vector3 pDir = new Vector3(input.x, input.y, 0f).normalized;
-    Vector3 rDir = new Vector3(input.x, -input.y, 0f).normalized;
-
-    // 2. PRE-CHECK: Can both move in their intended directions?
-    // We "look ahead" by a tiny distance (0.1f)
-    bool pPathBlocked = IsPathBlocked(playerRb, pDir);
-    bool rPathBlocked = IsPathBlocked(reflectionRb, rDir);
-
-    // 3. MUTUAL RULE: If either is blocked, both stop
-    if (pPathBlocked || rPathBlocked)
-    {
-        StopBoth();
-    }
-    else
-    {
-        playerRb.linearVelocity = pDir * moveSpeed;
-        reflectionRb.linearVelocity = rDir * moveSpeed;
-    }
-}
-
-[Header("Physics Settings")]
-[SerializeField] private LayerMask wallLayer; // Select "Maze" in the Inspector
-
-private bool IsPathBlocked(Rigidbody rb, Vector3 direction)
-{
-    // 1. Calculate the 'Front' of your snowflake based on movement direction
-    // Since your snowflake is 0.025 wide, the edge is 0.0125 away from center.
-    float radius = 0.0125f; 
-    Vector3 frontEdge = rb.position + (direction * radius);
-
-    // 2. Use a "Skinny" sensor box so it doesn't catch on the sides of the walls
-    // For a 0.025 wide object, a 0.01 width (half-extent of 0.005) is much safer.
-    Vector3 skinnyBox = new Vector3(0.005f, 0.005f, 0.002f); 
-
-    // 3. Look ahead just slightly further than before to catch walls early
-    float checkDistance = 0.005f; 
-
-    RaycastHit hit;
-    if (Physics.BoxCast(frontEdge, skinnyBox, direction, out hit, rb.rotation, checkDistance, wallLayer))
-    {
-        // 4. THE ANGLE CHECK: Only stop if hitting the wall head-on
-        // This stops you from getting stuck when just "grazing" a side wall.
-        float angle = Vector3.Dot(hit.normal, direction);
-        if (angle < -0.6f) 
+        Vector2 input = playerMove.ReadValue<Vector2>();
+        
+        // 1. If no input, stop immediately
+        if (input.sqrMagnitude < 0.01f)
         {
-            return true;
+            StopBoth();
+            return;
         }
-    }
-    
-    return false;
-}
 
-private void OnDrawGizmos()
-{
-    if (playerRb == null || reflectionRb == null) return;
-
-    Gizmos.color = Color.red;
-    Vector2 input = playerMove != null ? playerMove.ReadValue<Vector2>() : Vector2.zero;
-    
-    if (input.sqrMagnitude > 0.01f)
-    {
+        // 2. Determine intended direction
         Vector3 pDir = new Vector3(input.x, input.y, 0f).normalized;
         Vector3 rDir = new Vector3(input.x, -input.y, 0f).normalized;
 
-        // Draw the probe boxes
-        Gizmos.DrawWireCube(playerRb.position + pDir * 0.015f, new Vector3(0.01f, 0.01f, 0.005f));
-        Gizmos.DrawWireCube(reflectionRb.position + rDir * 0.015f, new Vector3(0.01f, 0.01f, 0.005f));
+        // 3. PRE-CHECK: Use the Goldilocks Probe to see if either is blocked
+        bool pPathBlocked = IsPathBlocked(playerRb, pDir);
+        bool rPathBlocked = IsPathBlocked(reflectionRb, rDir);
+
+        // 4. MUTUAL RULE: If either hits a barrier, both stop
+        if (pPathBlocked || rPathBlocked)
+        {
+            StopBoth();
+        }
+        else
+        {
+            // Apply velocity normally if path is clear
+            playerRb.linearVelocity = pDir * moveSpeed;
+            reflectionRb.linearVelocity = rDir * moveSpeed;
+        }
     }
-}}
 
-private void StopBoth()
-{
-    playerRb.linearVelocity = Vector3.zero;
-    reflectionRb.linearVelocity = Vector3.zero;
-}
-
-    private bool IsActuallyBlocked(Rigidbody rb, Vector3 intendedVel)
+    private bool IsPathBlocked(Rigidbody rb, Vector3 direction)
     {
-        // If we are trying to move but the actual velocity is nearly 0
-        // it means we are grinding against a wall.
-        return rb.linearVelocity.magnitude < 0.5f; 
+        // Dimensions for 0.025 scale: Skinny enough to ignore side walls (0.004f half-extent)
+        Vector3 skinnyBox = new Vector3(0.004f, 0.004f, 0.001f); 
+        
+        // Start slightly inside the edge so the box doesn't spawn already hitting a wall
+        float radius = 0.01f; 
+        Vector3 probeStart = rb.position + (direction * radius);
+
+        // Look ahead distance: Long enough to catch barriers before physics overlaps them
+        float checkDistance = 0.005f;
+
+        RaycastHit hit;
+        // Shoot the BoxCast only against the Maze layer
+        if (Physics.BoxCast(probeStart, skinnyBox, direction, out hit, rb.rotation, checkDistance, wallLayer))
+        {
+            // The Dot Product check: Only returns true if the wall is facing us (-1.0 to -0.5)
+            // This allows the character to slide against side walls (0.0) without stopping
+            float dot = Vector3.Dot(hit.normal, direction);
+            if (dot < -0.5f) 
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void StopBoth()
+    {
+        playerRb.linearVelocity = Vector3.zero;
+        reflectionRb.linearVelocity = Vector3.zero;
     }
 
     private void SetupRb(Rigidbody rb)
     {
         if (rb == null) return;
         rb.useGravity = false;
-        // Collision Detection should be Continuous for maze walls
+        
+        // Continuous detection is vital for micro-scale mesh walls
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous; 
+        
+        // Freeze Z and Rotations to keep movement strictly 2D on the XY plane
         rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        
+        // Smooth out the visual movement
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        
+        // Remove air resistance for snappy movement
+        rb.linearDamping = 0f;
+
+        // Increase solver iterations for better physics precision at small scales
+        rb.solverIterations = 30;
+    }
+
+    // Visualizes the "Goldilocks" probe in the Scene View
+    private void OnDrawGizmos()
+    {
+        if (playerRb == null || reflectionRb == null || playerMove == null) return;
+
+        Gizmos.color = Color.yellow;
+        Vector2 input = playerMove.ReadValue<Vector2>();
+        
+        if (input.sqrMagnitude > 0.01f)
+        {
+            Vector3 pDir = new Vector3(input.x, input.y, 0f).normalized;
+            Vector3 rDir = new Vector3(input.x, -input.y, 0f).normalized;
+
+            // Draw WireCubes to show where the sensors are looking
+            Gizmos.DrawWireCube(playerRb.position + pDir * 0.015f, new Vector3(0.008f, 0.008f, 0.005f));
+            Gizmos.DrawWireCube(reflectionRb.position + rDir * 0.015f, new Vector3(0.008f, 0.008f, 0.005f));
+        }
     }
 }
