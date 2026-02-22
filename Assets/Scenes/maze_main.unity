@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 322287372}
   - component: {fileID: 322287371}
   - component: {fileID: 322287374}
+  - component: {fileID: 322287375}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -181,7 +182,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 1
+  orthographic size: 0.14
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -205,8 +206,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322287370}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -1, w: 0}
-  m_LocalPosition: {x: -0.418, y: 0, z: -1.024}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0252, y: -0.9148, z: -9.9458}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -256,7 +257,39 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!1001 &2008199273914396909
+--- !u!114 &322287375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322287370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBrain
+  ShowDebugText: 0
+  ShowCameraFrustum: 1
+  IgnoreTimeScale: 0
+  WorldUpOverride: {fileID: 0}
+  ChannelMask: -1
+  UpdateMethod: 2
+  BlendUpdateMethod: 1
+  LensModeOverride:
+    Enabled: 0
+    DefaultMode: 2
+  DefaultBlend:
+    Style: 1
+    Time: 2
+    CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  CustomBlends: {fileID: 0}
+--- !u!1001 &4416504260022477310
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -264,38 +297,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1528952251445154070, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+    - target: {fileID: 962991095173220190, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.0252
       objectReference: {fileID: 0}
-    - target: {fileID: 1528952251445154070, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+    - target: {fileID: 962991095173220190, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.9148
       objectReference: {fileID: 0}
-    - target: {fileID: 6534870754093395662, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_Name
-      value: snowflake
+    - target: {fileID: 962991095173220190, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.9458
       objectReference: {fileID: 0}
-    - target: {fileID: 6963217993454553212, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.0191075
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963217993454553212, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.0191075
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963217993454553212, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.0029007173
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963217993454553212, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.0266
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963217993454553212, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.9128
-      objectReference: {fileID: 0}
+    - target: {fileID: 1711006249057451382, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e49b1f1ade3ce7e41be182b1356734b4, type: 2}
     - target: {fileID: 8594467487872520333, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -350,4 +367,4 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 322287373}
-  - {fileID: 2008199273914396909}
+  - {fileID: 4416504260022477310}
