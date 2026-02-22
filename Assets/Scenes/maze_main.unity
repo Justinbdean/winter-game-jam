@@ -272,6 +272,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6534870754093395662, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_Name
+      value: snowflake
+      objectReference: {fileID: 0}
     - target: {fileID: 6963217993454553212, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.0191075
