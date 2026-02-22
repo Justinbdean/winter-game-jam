@@ -6,6 +6,7 @@ public class ReflectedPlayerMovement3D : MonoBehaviour
     [SerializeField] private float moveSpeed = 6f;
     [SerializeField] private InputActionAsset inputActions;
     [SerializeField] GameObject solution;
+    [SerializeField] GameObject snowflake;
 
     private InputAction moveAction;
     private Rigidbody rb;
@@ -21,7 +22,7 @@ public class ReflectedPlayerMovement3D : MonoBehaviour
 
         rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 
-        var map = inputActions.FindActionMap("Player", true);
+        var map = inputActions.FindActionMap("Player Reflection", true);
         moveAction = map.FindAction("Move", true);
     }
 
@@ -37,7 +38,7 @@ public class ReflectedPlayerMovement3D : MonoBehaviour
         if (move.sqrMagnitude > 1f)
             move.Normalize();
 
-        rb.linearVelocity = new Vector3(input.x, -input.y, 0f) * moveSpeed * Time.deltaTime;
+        rb.linearVelocity = new Vector3(input.x, input.y, 0f) * moveSpeed * Time.deltaTime;
     }
     void Update()
     {
