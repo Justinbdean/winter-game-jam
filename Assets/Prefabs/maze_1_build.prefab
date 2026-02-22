@@ -6287,7 +6287,6 @@ Transform:
   - {fileID: 791049486677564374}
   - {fileID: 1894476947708812049}
   - {fileID: 6974578090319805452}
-  - {fileID: 3933195393831057090}
   - {fileID: 8534809050288197187}
   m_Father: {fileID: 8326472651612019898}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9776,7 +9775,6 @@ Transform:
   - {fileID: 3830327930671789352}
   - {fileID: 2770576150422579752}
   - {fileID: 8759806116276191934}
-  - {fileID: 4236588467386106456}
   m_Father: {fileID: 8326472651612019898}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6829651998615444188
@@ -9927,7 +9925,7 @@ Transform:
   m_LocalScale: {x: 0.04180925, y: 0.01114, z: 0.053519998}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8049663876358085335}
+  m_Father: {fileID: 8594467487872520333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6011761388492796953
 MeshFilter:
@@ -11668,12 +11666,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7776566623270816805}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.0284, y: -0.933, z: 0.0569}
   m_LocalScale: {x: 0.04265625, y: 0.011140571, z: 0.05352378}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4123583954759143763}
+  m_Father: {fileID: 8594467487872520333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8511428313353459318
 MeshFilter:
@@ -12055,8 +12053,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7967984215892228891}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.028259277, y: -0.91000783, z: -9.945801}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.02825, y: -0.91004, z: -9.9458}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14526,6 +14524,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8594467487872520333}
+  - component: {fileID: 5074839463369342057}
   m_Layer: 0
   m_Name: maze_1_build
   m_TagString: Untagged
@@ -14555,8 +14554,25 @@ Transform:
   - {fileID: 6040691831494699525}
   - {fileID: 5822263298756799605}
   - {fileID: 1754158935392130299}
+  - {fileID: 4236588467386106456}
+  - {fileID: 3933195393831057090}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5074839463369342057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9049891298154501945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 995e95627209c4951acf92b0641c0d78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneReloader
+  menuSceneIndex: 0
+  gameSceneIndex: 0
+  allowKeyboardStart: 1
 --- !u!1 &9130750031594998404
 GameObject:
   m_ObjectHideFlags: 0
