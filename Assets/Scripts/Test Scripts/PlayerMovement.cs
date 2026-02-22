@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement3D : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 6f;

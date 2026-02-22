@@ -289,6 +289,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!1 &868112001 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8434623545311445078, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+  m_PrefabInstance: {fileID: 4416504260022477310}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4416504260022477310
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -313,6 +318,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: e49b1f1ade3ce7e41be182b1356734b4, type: 2}
+    - target: {fileID: 4048190556628941617, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: solution
+      value: 
+      objectReference: {fileID: 868112001}
     - target: {fileID: 8594467487872520333, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
