@@ -1,5 +1,3 @@
-using System;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -9,7 +7,9 @@ public class NewMonoBehaviourScript : MonoBehaviour
     [SerializeField] int menuSceneIndex;
     [SerializeField] int gameSceneIndex;
     [SerializeField] private bool allowKeyboardStart = true;
+
     private bool loading;
+
     void Start()
     {
         if (SceneManager.GetActiveScene().buildIndex != menuSceneIndex)
@@ -18,26 +18,42 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
     void Update()
     {
-                if (!allowKeyboardStart) return;
-        if (loading) return;
-        if (SceneManager.GetActiveScene().buildIndex != menuSceneIndex) return;
-
-
-        if (Keyboard.current.anyKey.wasPressedThisFrame)
+        if (!loading &&
+            allowKeyboardStart &&
+            SceneManager.GetActiveScene().buildIndex == menuSceneIndex &&
+            Keyboard.current.anyKey.wasPressedThisFrame)
+        {
             StartGame();
+        }
+
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+                    Debug.Log("Quit Game Button Pressed");
+            Quit();
+        }
     }
 
-        public void StartGame()
+    public void StartGame()
     {
         if (loading) return;
         loading = true;
         SceneManager.LoadScene(gameSceneIndex);
     }
 
-        public void OnDeath()
+    public void OnDeath()
     {
         if (loading) return;
         loading = true;
         SceneManager.LoadScene(gameSceneIndex);
+    }
+
+    void Quit()
+    {
+        Debug.Log("Quit Game");
+        Application.Quit();
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 }
