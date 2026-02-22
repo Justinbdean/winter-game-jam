@@ -6,6 +6,7 @@ public class PlayerMovement3D : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 6f;
     [SerializeField] private InputActionAsset inputActions;
+    [SerializeField] GameObject solution;
 
     private InputAction moveAction;
     private Rigidbody rb;
@@ -38,5 +39,24 @@ public class PlayerMovement3D : MonoBehaviour
             move.Normalize();
 
         rb.linearVelocity = new Vector3(input.x, input.y, 0f) * moveSpeed * Time.deltaTime;
+    }
+    void Update()
+    {
+        ShowSolution();
+    }
+
+    private void ShowSolution()
+    {
+        if (Keyboard.current.nKey.wasPressedThisFrame)
+        {
+            if (solution.activeInHierarchy == true)
+            {
+                solution.SetActive(false);
+            }
+            else
+            {
+                solution.SetActive(true);
+            }
+        }
     }
 }
