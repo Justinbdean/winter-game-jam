@@ -256,7 +256,7 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!1001 &5485057178231340688
+--- !u!1001 &2008199273914396909
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -264,6 +264,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1528952251445154070, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1528952251445154070, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963217993454553212, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.0191075
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963217993454553212, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.0191075
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963217993454553212, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.0029007173
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963217993454553212, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0266
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963217993454553212, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.9128
+      objectReference: {fileID: 0}
     - target: {fileID: 8594467487872520333, guid: b643cfdc4b2fed442880041ffe148fac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -318,4 +346,4 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 322287373}
-  - {fileID: 5485057178231340688}
+  - {fileID: 2008199273914396909}
