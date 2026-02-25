@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class TwoPlayerMovement3D : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 3f; 
+    [SerializeField] private float moveSpeed = 6f;
     [SerializeField] private InputActionAsset inputActions;
 
     [Header("Players (assign in Inspector)")]
@@ -13,12 +13,14 @@ public class TwoPlayerMovement3D : MonoBehaviour
 
     [Header("Action Maps / Actions")]
     [SerializeField] private string playerMapName = "Player";
+    [SerializeField] private string reflectionMapName = "Player Reflection";
     [SerializeField] private string moveActionName = "Move";
 
-    [Header("Physics Settings")]
-    [SerializeField] private LayerMask wallLayer; 
+    [Header("UI / Helpers")]
+    [SerializeField] private GameObject solution;
 
     private InputAction playerMove;
+    private InputAction reflectionMove;
 
     private void Awake()
     {
@@ -27,95 +29,73 @@ public class TwoPlayerMovement3D : MonoBehaviour
 
         var playerMap = inputActions.FindActionMap(playerMapName, true);
         playerMove = playerMap.FindAction(moveActionName, true);
+
+        var reflectionMap = inputActions.FindActionMap(reflectionMapName, true);
+        reflectionMove = reflectionMap.FindAction(moveActionName, true);
     }
 
-    private void OnEnable() => playerMove.Enable();
-    private void OnDisable() => playerMove.Disable();
+    private void OnEnable()
+    {
+        playerMove.Enable();
+        reflectionMove.Enable();
+    }
+
+    private void OnDisable()
+    {
+        playerMove.Disable();
+        reflectionMove.Disable();
+    }
 
     private void FixedUpdate()
     {
-        if (playerRb == null || reflectionRb == null) return;
 
-        Vector2 input = playerMove.ReadValue<Vector2>();
-        
-        if (input.sqrMagnitude < 0.01f)
-        {
-            StopBoth();
-            return;
-        }
+        MoveRb(playerRb, playerMove.ReadValue<Vector2>());
+        MoveRb(reflectionRb, reflectionMove.ReadValue<Vector2>());
 
-        Vector3 pDir = new Vector3(input.x, input.y, 0f).normalized;
-        Vector3 rDir = new Vector3(input.x, -input.y, 0f).normalized;
-
-        bool pPathBlocked = IsPathBlocked(playerRb, pDir);
-        bool rPathBlocked = IsPathBlocked(reflectionRb, rDir);
-
-        if (pPathBlocked || rPathBlocked)
-        {
-            StopBoth();
-            
-            playerRb.Sleep();
-            reflectionRb.Sleep();
-        }
-        else
-        {
-            playerRb.linearVelocity = pDir * moveSpeed;
-            reflectionRb.linearVelocity = rDir * moveSpeed;
-        }
+        SyncStopIfOneStops();
     }
 
-    private bool IsPathBlocked(Rigidbody rb, Vector3 direction)
+    private void Update()
     {
-        Vector3 skinnyBox = new Vector3(0.004f, 0.004f, 0.001f); 
-        float radius = 0.01f; 
-        Vector3 probeStart = rb.position + (direction * radius);
-        float checkDistance = 0.005f;
-
-        RaycastHit hit;
-        if (Physics.BoxCast(probeStart, skinnyBox, direction, out hit, rb.rotation, checkDistance, wallLayer))
+        if (Keyboard.current != null && Keyboard.current.nKey.wasPressedThisFrame)
         {
-            float dot = Vector3.Dot(hit.normal, direction);
-            if (dot < -0.5f) 
-            {
-                return true;
-            }
+            if (solution != null)
+                solution.SetActive(!solution.activeSelf);
         }
-        return false;
-    }
-
-    private void StopBoth()
-    {
-        playerRb.linearVelocity = Vector3.zero;
-        reflectionRb.linearVelocity = Vector3.zero;
-        playerRb.angularVelocity = Vector3.zero;
-        reflectionRb.angularVelocity = Vector3.zero;
     }
 
     private void SetupRb(Rigidbody rb)
     {
         if (rb == null) return;
+
         rb.useGravity = false;
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous; 
+        rb.freezeRotation = true;
         rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
-        rb.linearDamping = 0f;
-        rb.solverIterations = 30;
     }
 
-    private void OnDrawGizmos()
+    private void MoveRb(Rigidbody rb, Vector2 input)
     {
-        if (playerRb == null || reflectionRb == null || playerMove == null) return;
+        if (rb == null) return;
 
-        Gizmos.color = Color.yellow;
-        Vector2 input = playerMove.ReadValue<Vector2>();
-        
-        if (input.sqrMagnitude > 0.01f)
+        Vector3 move = new Vector3(input.x, input.y, 0f);
+
+        if (move.sqrMagnitude > 1f)
+            move.Normalize();
+
+        rb.linearVelocity = move * moveSpeed * Time.deltaTime;
+    }
+
+    private void SyncStopIfOneStops()
+    {
+        if (playerRb == null || reflectionRb == null) return;
+
+        bool playerStopped = playerRb.linearVelocity.sqrMagnitude < 0.0001f;
+        bool reflectionStopped = reflectionRb.linearVelocity.sqrMagnitude < 0.0001f;
+
+        if (playerStopped || reflectionStopped)
         {
-            Vector3 pDir = new Vector3(input.x, input.y, 0f).normalized;
-            Vector3 rDir = new Vector3(input.x, -input.y, 0f).normalized;
-
-            Gizmos.DrawWireCube(playerRb.position + pDir * 0.015f, new Vector3(0.008f, 0.008f, 0.005f));
-            Gizmos.DrawWireCube(reflectionRb.position + rDir * 0.015f, new Vector3(0.008f, 0.008f, 0.005f));
+            playerRb.linearVelocity = Vector3.zero;
+            reflectionRb.linearVelocity = Vector3.zero;
         }
     }
 }
